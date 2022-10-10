@@ -1,5 +1,6 @@
 package jm.task.core.jdbc.service;
 
+import jm.task.core.jdbc.dao.UserDao;
 import jm.task.core.jdbc.dao.UserDaoJDBCImpl;
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
@@ -11,18 +12,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class UserServiceImpl extends UserDaoJDBCImpl implements UserService {
-    Connection connection;
-
-    {
-        try {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydbtest","root","root");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    UserDaoJDBCImpl udji = new UserDaoJDBCImpl(connection);
+public class UserServiceImpl implements UserService {
+    UserDao udji = new UserDaoJDBCImpl();
     public void createUsersTable() {
         udji.createUsersTable();
     }

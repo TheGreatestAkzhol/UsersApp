@@ -7,11 +7,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Util {
-    private final Logger LOGGER = Logger.getLogger(Util.class.getName());
-    private final String HOST = "jdbc:mysql://localhost:3306/mydbtest";
-    private final String USERNAME = "root";
-    private final String PASSWORD = "root";
-    public Connection getConnection(){
+    private static final Logger LOGGER = Logger.getLogger(Util.class.getName());
+    private static final String HOST = "jdbc:mysql://localhost:3306/mydbtest";
+    private static final String USERNAME = "root";
+    private static final String PASSWORD = "root";
+    public static Connection getConnection(){
         Connection connection = null;
         try{
             connection = DriverManager.getConnection(HOST,USERNAME,PASSWORD);
