@@ -1,6 +1,4 @@
 package jm.task.core.jdbc.dao;
-
-import jm.task.core.jdbc.existOrNot.eon;
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
 
@@ -18,8 +16,7 @@ public class UserDaoJDBCImpl implements UserDao {
     public UserDaoJDBCImpl() {
     }
     public void createUsersTable() {
-        String name = "user";
-        String creating = "CREATE TABLE {0}" +
+        String creating = "CREATE TABLE IF NOT EXISTS user" +
                 "(ID INTEGER not NULL AUTO_INCREMENT," +
                 "name VARCHAR(45) not null," +
                 "lastname VARCHAR(45) not null," +
@@ -27,29 +24,23 @@ public class UserDaoJDBCImpl implements UserDao {
                 "PRIMARY KEY ( ID )," +
                 "UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)";
         try {
-                if(eon.tableExistsSQL()){
-                    LOGGER.log(Level.INFO,"Your table is already exist");
-                }else {
-                    Statement statement = Util.getConnection().createStatement();
-                    statement.execute(MessageFormat.format(creating, name));
-                    statement.close();
-                }
+            Statement statement = Util.getConnection().createStatement();
+            statement.execute(creating);
+            Object name = "user";
+            LOGGER.log(Level.INFO,"You've created table");
+            statement.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     public void dropUsersTable() {
+        String sql =  "DROP TABLE IF EXISTS `user`";;
         try {
-            if(eon.tableExistsSQL()==false){
-                LOGGER.log(Level.INFO,"You try to delete not existing table bro");
-            }else {
-                Statement statement = Util.getConnection().createStatement();
-                String sql = "DROP TABLE user";
-                statement.executeUpdate(sql);
-                LOGGER.log(Level.INFO, "Table deleted in given database...");
-                statement.close();
-            }
+            Statement statement = Util.getConnection().createStatement();
+            statement.executeUpdate(sql);
+            LOGGER.log(Level.INFO, "Table deleted in given database...");
+            statement.close();
         }catch (SQLException e) {
             e.printStackTrace();
         }
